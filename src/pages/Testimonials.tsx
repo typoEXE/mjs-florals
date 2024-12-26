@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { FaQuoteLeft, FaStar } from 'react-icons/fa'
+import { supabase } from '../lib/supabase'
+import TestimonialForm from '../components/TestimonialForm'
+import type { Testimonial } from '../types/testimonial'
 
 const TestimonialsContainer = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.wide};
@@ -96,58 +100,31 @@ const ClientDetails = styled.div`
   }
 `
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    role: 'Bride',
-    image: '/images/testimonials/client-1.jpg',
-    rating: 5,
-    text: 'Joy created the most stunning floral arrangements for my wedding. Her attention to detail and ability to bring my vision to life was incredible. The bouquets were absolutely perfect!',
-  },
-  {
-    id: 2,
-    name: 'Michael Chen',
-    role: 'Corporate Event Planner',
-    image: '/images/testimonials/client-2.jpg',
-    rating: 5,
-    text: 'Working with MJ\'s Floral for our company gala was a fantastic experience. The arrangements were elegant and received countless compliments from our guests.',
-  },
-  {
-    id: 3,
-    name: 'Emily Rodriguez',
-    role: 'Birthday Celebration',
-    image: '/images/testimonials/client-3.jpg',
-    rating: 5,
-    text: 'Joy has an amazing talent for creating beautiful arrangements. She designed the perfect centerpieces for my 30th birthday party, capturing exactly the mood I wanted.',
-  },
-  {
-    id: 4,
-    name: 'David Thompson',
-    role: 'Wedding Planner',
-    image: '/images/testimonials/client-4.jpg',
-    rating: 5,
-    text: 'I\'ve worked with many florists, but MJ\'s Floral stands out for their creativity and professionalism. They\'re my go-to recommendation for all my clients.',
-  },
-  {
-    id: 5,
-    name: 'Lisa Martinez',
-    role: 'Anniversary Celebration',
-    image: '/images/testimonials/client-5.jpg',
-    rating: 5,
-    text: 'The anniversary arrangement Joy created was beyond my expectations. Her artistic vision and quality of flowers were exceptional. Highly recommend!',
-  },
-  {
-    id: 6,
-    name: 'James Wilson',
-    role: 'Corporate Client',
-    image: '/images/testimonials/client-6.jpg',
-    rating: 5,
-    text: 'We use MJ\'s Floral for all our office arrangements and special events. Their consistency in quality and service is unmatched. A true professional.',
-  },
-]
-
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchTestimonials()
+  }, [])
+
+  const fetchTestimonials = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+
+      setTestimonials(data || [])
+    } catch (error) {
+      console.error('Error fetching testimonials:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <TestimonialsContainer>
       <Header>
@@ -158,32 +135,42 @@ const Testimonials = () => {
         </Subtitle>
       </Header>
 
+      <TestimonialForm />
+
       <TestimonialsGrid>
-        {testimonials.map(testimonial => (
-          <TestimonialCard
-            key={testimonial.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <QuoteIcon>
-              <FaQuoteLeft />
-            </QuoteIcon>
-            <Stars>
-              {[...Array(testimonial.rating)].map((_, index) => (
-                <FaStar key={index} />
-              ))}
-            </Stars>
-            <TestimonialText>{testimonial.text}</TestimonialText>
-            <ClientInfo>
-              <ClientImage src={testimonial.image} alt={testimonial.name} />
-              <ClientDetails>
-                <h3>{testimonial.name}</h3>
-                <p>{testimonial.role}</p>
-              </ClientDetails>
-            </ClientInfo>
-          </TestimonialCard>
-        ))}
+        {loading ? (
+          <p>Loading testimonials...</p>
+        ) : testimonials.length === 0 ? (
+          <p>No testimonials yet. Be the first to leave one!</p>
+        ) : (
+          testimonials.map(testimonial => (
+            <TestimonialCard
+              key={testimonial.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <QuoteIcon>
+                <FaQuoteLeft />
+              </QuoteIcon>
+              <Stars>
+                {[...Array(testimonial.rating)].map((_, index) => (
+                  <FaStar key={index} />
+                ))}
+              </Stars>
+              <TestimonialText>{testimonial.text}</TestimonialText>
+              <ClientInfo>
+                <ClientDetails>
+                  <h3>{testimonial.name}</h3>
+                  <p>{testimonial.occasion}</p>
+                  <p style={{ fontSize: '0.8rem', color: '#666' }}>
+                    {new Date(testimonial.created_at).toLocaleDateString()}
+                  </p>
+                </ClientDetails>
+              </ClientInfo>
+            </TestimonialCard>
+          ))
+        )}
       </TestimonialsGrid>
     </TestimonialsContainer>
   )
