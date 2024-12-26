@@ -36,12 +36,14 @@ const BusinessCard = styled.div`
 
 const InfoItem = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  text-align: center;
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
 
   svg {
-    font-size: 1.5rem;
-    margin-right: ${({ theme }) => theme.spacing.md};
+    font-size: 2rem;
+    margin-bottom: ${({ theme }) => theme.spacing.md};
     color: ${({ theme }) => theme.colors.primary};
   }
 

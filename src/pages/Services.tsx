@@ -48,36 +48,43 @@ const ServiceImage = styled.img`
 
 const ServiceContent = styled.div`
   padding: ${({ theme }) => theme.spacing.lg};
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const ServiceTitle = styled.h2`
   font-family: ${({ theme }) => theme.fonts.secondary};
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: ${({ theme }) => theme.spacing.md};
+  text-align: center;
 `
 
 const ServiceDescription = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+  width: 100%;
 
   p {
     margin-bottom: ${({ theme }) => theme.spacing.md};
     line-height: 1.6;
+    text-align: center;
   }
 
   ul {
     list-style-type: none;
     padding: 0;
+    text-align: center;
 
     li {
       margin-bottom: ${({ theme }) => theme.spacing.sm};
-      padding-left: ${({ theme }) => theme.spacing.md};
+      padding-left: 0;
       position: relative;
 
       &:before {
         content: "•";
         color: ${({ theme }) => theme.colors.primary};
-        position: absolute;
-        left: 0;
+        margin-right: ${({ theme }) => theme.spacing.sm};
       }
     }
   }
@@ -92,6 +99,7 @@ const Button = styled(Link)`
   text-decoration: none;
   font-weight: 600;
   transition: background-color ${({ theme }) => theme.transitions.fast};
+  text-align: center;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.secondary};
@@ -102,7 +110,7 @@ const services = [
   {
     id: 1,
     title: 'Wedding Flowers',
-    image: '/images/services/weddings.jpg',
+    image: '/images/centerImg.jpg',
     description: `Transform your special day with our exquisite wedding floral designs. We offer:`,
     features: [
       'Bridal bouquets and bridesmaids bouquets',

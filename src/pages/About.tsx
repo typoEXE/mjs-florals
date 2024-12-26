@@ -28,7 +28,7 @@ const Subtitle = styled.p`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.md};
   margin-top: ${({ theme }) => theme.spacing.xl};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -41,8 +41,9 @@ const ImageContainer = styled(motion.div)`
   
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    max-height: 600px;
+    object-fit: contain;
     border-radius: ${({ theme }) => theme.borderRadius.medium};
   }
 `
@@ -98,7 +99,7 @@ const About = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img src="https://i.imgur.com/s1vdHUY.png" alt="Marie Joy" />
+          <img src="/images/aboutImg.jpg" alt="Marie Joy" />
         </ImageContainer>
 
         <Content>
@@ -128,7 +129,7 @@ const About = () => {
             </StatItem>
             <StatItem>
               <h3>100%</h3>
-              <p>Woman Owned</p>
+              <p>Family Owned</p>
             </StatItem>
             <StatItem>
               <h3>∞</h3>
