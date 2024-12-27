@@ -7,6 +7,7 @@ export const theme = {
     text: '#333333',
     textLight: '#666666',
     background: '#FFFFFF',
+    border: '#E1E1E1', // Light gray for borders
   },
   fonts: {
     primary: "'Lexend', sans-serif",
