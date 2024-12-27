@@ -30,8 +30,6 @@ function App() {
         <Navbar />
         <MainContent>
           <Routes>
-            {/* Add Tempo route before other routes */}
-            {import.meta.env.VITE_TEMPO && <Route path="/tempobook/*" element={null} />}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/portfolio" element={<Portfolio />} />
